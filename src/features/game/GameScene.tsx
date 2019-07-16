@@ -86,9 +86,9 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
           zIndex: 100
         })}
       >
-        {Array.from(Array(life)).map(() => (
+        {Array.from(Array(life)).map((_, i) => (
           <img
-            key={Math.random()}
+            key={i}
             src="/img/creditcard.png"
             alt="life"
             className={css({ height: "3rem" })}
