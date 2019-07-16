@@ -72,7 +72,6 @@ export const useGame = (onGameOver: () => void) => {
         )
       ) {
         missLife();
-        setPrice(getRandomPrice(calculateAmount(walletMonies)));
       } else {
         // 残金が少ないなら10000円を補充
         if (calculateAmount(nextWalletMonies) < 500) {
