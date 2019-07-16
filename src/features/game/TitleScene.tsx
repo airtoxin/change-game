@@ -24,7 +24,7 @@ export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
       css({
         position: "absolute",
         height: "30vh",
-        top: "30vh",
+        top: "40vh",
         right: "-10vw",
         transition: "all 1s linear",
         transform: `translateX(-${position})`
@@ -37,7 +37,7 @@ export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
       css({
         position: "absolute",
         height: "30vh",
-        top: "30vh",
+        top: "40vh",
         left: "-10vw",
         transition: "all 1s linear",
         transform: `scaleX(-1) translateX(-${position})`
@@ -60,7 +60,22 @@ export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
     <div className={classNameContainer}>
       <h1>釣り銭ゲーム</h1>
       <p>お釣りが少なくなるように支払いをしよう！</p>
-      <button onClick={onStart}>ゲームを始める</button>
+      <button
+        onClick={onStart}
+        className={css({
+          width: "auto",
+          padding: 0,
+          margin: 0,
+          background: "none",
+          border: 0,
+          fontSize: 0,
+          lineHeight: 0,
+          overflow: "visible",
+          cursor: "pointer"
+        })}
+      >
+        <img src="/img/navigation_go.png" alt="navigation_go" />
+      </button>
       <img
         className={classNameRight}
         src="/img/baramaki_1.png"
