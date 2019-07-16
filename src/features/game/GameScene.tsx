@@ -106,7 +106,6 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
           />
         ))}
       </div>
-      <h2>財布: ¥{totalAmount}</h2>
       <Button onClick={pay} className={css({ width: "100%" })}>
         <img src="/img/pay.png" alt="pay" className={css({ height: "5rem" })} />
       </Button>

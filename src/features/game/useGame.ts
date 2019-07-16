@@ -62,14 +62,17 @@ export const useGame = (onGameOver: () => void) => {
       let nextWalletMonies = sortByAmount(
         remains.concat(changes)
       ) as MoneyWithId[];
-      if (!isPerfectPay(nextWalletMonies)) missLife();
-      // 残金が少ないなら10000円を補充
-      if (calculateAmount(nextWalletMonies) < 500) {
-        nextWalletMonies = [MoneyWithId(10000)].concat(nextWalletMonies);
+      if (!isPerfectPay(nextWalletMonies)) {
+        missLife();
+        setPrice(getRandomPrice(calculateAmount(walletMonies)));
+      } else {
+        // 残金が少ないなら10000円を補充
+        if (calculateAmount(nextWalletMonies) < 500) {
+          nextWalletMonies = [MoneyWithId(10000)].concat(nextWalletMonies);
+        }
+        setWalletMonies(nextWalletMonies);
+        setPrice(getRandomPrice(calculateAmount(nextWalletMonies)));
       }
-
-      setWalletMonies(nextWalletMonies);
-      setPrice(getRandomPrice(calculateAmount(nextWalletMonies)));
       setSelectedMonies({});
     }
   }, [missLife, price, selectedMonies, walletMonies]);
