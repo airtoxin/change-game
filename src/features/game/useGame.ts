@@ -3,7 +3,7 @@ import { MoneyWithId } from "./MoneyWithId";
 import { calculateAmount, sortByAmount } from "../../domains/models/Money";
 import { partition } from "lodash/fp";
 import { ChangeCalculator } from "../../domains/ChangeCalculator";
-import { isPerfectPay } from "../../domains/isPerfectPay";
+import { PerfectPayCalculator } from "../../domains/PerfectPayCalculator";
 
 const getRandomPrice = (maxPrice: number) =>
   Math.floor(Math.random() * maxPrice);
@@ -62,7 +62,13 @@ export const useGame = (onGameOver: () => void) => {
       let nextWalletMonies = sortByAmount(
         remains.concat(changes)
       ) as MoneyWithId[];
-      if (!isPerfectPay(nextWalletMonies)) {
+      if (
+        !new PerfectPayCalculator().isPerfectPay(
+          payCandidates,
+          changes,
+          nextWalletMonies
+        )
+      ) {
         missLife();
         setPrice(getRandomPrice(calculateAmount(walletMonies)));
       } else {
