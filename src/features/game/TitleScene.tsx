@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { css } from "emotion";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 
 export type Props = {
   onStart: () => any;
@@ -7,6 +9,7 @@ export type Props = {
 
 export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
   const [position, setPosition] = useState("0");
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     setPosition("20vw");
@@ -55,11 +58,29 @@ export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
       }),
     []
   );
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  useEffect(() => {
+    const img = new Image();
+    img.src = `/img/money_10000.png`;
+    img.onload = () => setImage(img);
+  }, []);
 
   return (
     <div className={classNameContainer}>
+      {image && (
+        <Confetti
+          canvasRef={null as any}
+          style={{ zIndex: -1 }}
+          numberOfPieces={40}
+          width={width}
+          height={height}
+          drawShape={ctx => {
+            ctx.drawImage(image, 0, 0, 50, 30);
+          }}
+        />
+      )}
       <h1>釣り銭ゲーム</h1>
-      <p>お釣りが少なくなるように支払いをしよう！</p>
+      <h2>お釣りが少なくなるように支払いをしよう！</h2>
       <button
         onClick={onStart}
         className={css({
