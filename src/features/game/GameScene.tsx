@@ -4,15 +4,20 @@ import { Button } from "../../components/PayButton";
 import { css } from "emotion";
 import { useGame } from "./useGame";
 
-export const GameScene: React.FunctionComponent = () => {
+export type Props = {
+  onGameOver: () => void;
+};
+
+export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
   const {
+    life,
     walletMonies,
     totalAmount,
     price,
     isSelectedMoney,
     selectAsCandidate,
     pay
-  } = useGame();
+  } = useGame(onGameOver);
 
   return (
     <div
@@ -22,6 +27,24 @@ export const GameScene: React.FunctionComponent = () => {
         alignItems: "center"
       })}
     >
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          position: "absolute",
+          top: 0,
+          right: 0
+        })}
+      >
+        {Array.from(Array(life)).map(() => (
+          <img
+            key={Math.random()}
+            src="/img/creditcard.png"
+            alt="life"
+            className={css({ height: "3rem" })}
+          />
+        ))}
+      </div>
       <h2>値段: ¥{price}</h2>
       <div>
         {walletMonies.map(money => (

@@ -7,7 +7,14 @@ import { ChangeCalculator } from "../../domains/ChangeCalculator";
 const getRandomPrice = (maxPrice: number) =>
   Math.floor(Math.random() * maxPrice);
 
-export const useGame = () => {
+export const useGame = (onGameOver: () => void) => {
+  const [life, setLife] = useState(3);
+  const missLife = useCallback(() => {
+    const nextLife = life - 1;
+    if (nextLife === 0) onGameOver();
+    setLife(nextLife);
+  }, [life, onGameOver]);
+
   const [walletMonies, setWalletMonies] = useState<MoneyWithId[]>([
     MoneyWithId(10000)
   ]);
@@ -45,25 +52,28 @@ export const useGame = () => {
       wm => selectedMonies[wm.id]
     )(walletMonies);
 
-    if (price > calculateAmount(payCandidates)) console.log("ERROR"); // TODO: miss
+    if (price > calculateAmount(payCandidates)) {
+      missLife();
+    } else {
+      const changes = new ChangeCalculator(price)
+        .calculateChange(payCandidates)
+        .map(MoneyWithId);
+      let nextWalletMonies = sortByAmount(
+        remains.concat(changes)
+      ) as MoneyWithId[];
+      // 残金が少ないなら10000円を補充
+      if (calculateAmount(nextWalletMonies) < 500) {
+        nextWalletMonies = [MoneyWithId(10000)].concat(nextWalletMonies);
+      }
 
-    const changes = new ChangeCalculator(price)
-      .calculateChange(payCandidates)
-      .map(MoneyWithId);
-    let nextWalletMonies = sortByAmount(
-      remains.concat(changes)
-    ) as MoneyWithId[];
-    // 残金が少ないなら10000円を補充
-    if (calculateAmount(nextWalletMonies) < 500) {
-      nextWalletMonies = nextWalletMonies.concat([MoneyWithId(10000)]);
+      setWalletMonies(nextWalletMonies);
+      setPrice(getRandomPrice(calculateAmount(nextWalletMonies)));
+      setSelectedMonies({});
     }
-
-    setWalletMonies(nextWalletMonies);
-    setPrice(getRandomPrice(calculateAmount(nextWalletMonies)));
-    setSelectedMonies({});
-  }, [price, selectedMonies, walletMonies]);
+  }, [missLife, price, selectedMonies, walletMonies]);
 
   return {
+    life,
     walletMonies,
     totalAmount,
     price,
