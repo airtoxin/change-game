@@ -6,6 +6,7 @@ import { useHover } from "../hooks/useHover";
 export type Props = {
   money: Money;
   onClick: () => any;
+  isActive: boolean;
 };
 
 const moneyToImageSourceUrl = (money: Money) =>
@@ -13,7 +14,8 @@ const moneyToImageSourceUrl = (money: Money) =>
 
 export const MoneyImage: React.FunctionComponent<Props> = ({
   money,
-  onClick
+  onClick,
+  isActive
 }) => {
   const src = useMemo(() => moneyToImageSourceUrl(money), [money]);
   const { isHover, props } = useHover();
@@ -21,10 +23,11 @@ export const MoneyImage: React.FunctionComponent<Props> = ({
     () =>
       css({
         height: "4rem",
-        transition: "transform 30ms ease",
-        transform: isHover ? "scale(1.1)" : ""
+        transition: "transform 200ms ease",
+        transform: isHover ? "scale(1.1)" : "",
+        opacity: isActive ? 0.5 : 1
       }),
-    [isHover]
+    [isHover, isActive]
   );
 
   return (

@@ -80,19 +80,24 @@ export const TitleScene: React.FunctionComponent<Props> = ({ onStart }) => {
         />
       )}
       <h1>釣り銭ゲーム</h1>
-      <h2>お釣りが少なくなるように支払いをしよう！</h2>
+      <h2>釣り銭が少なくなるように支払いをしよう！</h2>
       <button
         onClick={onStart}
         className={css({
           width: "auto",
           padding: 0,
           margin: 0,
+          outline: "none",
           background: "none",
           border: 0,
           fontSize: 0,
           lineHeight: 0,
           overflow: "visible",
-          cursor: "pointer"
+          cursor: "pointer",
+          transition: "transform 200ms ease",
+          ":hover": {
+            transform: "scale(1.2)"
+          }
         })}
       >
         <img src="/img/navigation_go.png" alt="navigation_go" />

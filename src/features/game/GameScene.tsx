@@ -1,35 +1,42 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { MoneyImage } from "../../components/MoneyImage";
-import { MoneyWithId } from "./MoneyWithId";
-import { ChangeCalculator } from "../../domains/ChangeCalculator";
+import { Button } from "../../components/PayButton";
+import { css } from "emotion";
+import { useGame } from "./useGame";
 
 export const GameScene: React.FunctionComponent = () => {
-  const [walletMonies, setWalletMonies] = useState<MoneyWithId[]>([
-    MoneyWithId(10000)
-  ]);
-  const [price, setPrice] = useState(Math.floor(Math.random() * 10000));
-
-  const pay = useCallback(
-    (money: MoneyWithId) => () => {
-      const changes = new ChangeCalculator(price).calculateChange([money]);
-      setWalletMonies(changes.map(MoneyWithId));
-    },
-    [walletMonies, price]
-  );
+  const {
+    walletMonies,
+    totalAmount,
+    price,
+    isSelectedMoney,
+    selectAsCandidate,
+    pay
+  } = useGame();
 
   return (
-    <div>
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      })}
+    >
+      <h2>値段: ¥{price}</h2>
       <div>
-        <h2>値段: {price}</h2>
+        {walletMonies.map(money => (
+          <MoneyImage
+            key={money.id}
+            money={money}
+            isActive={isSelectedMoney(money)}
+            onClick={selectAsCandidate(money)}
+          />
+        ))}
       </div>
-      <div>
-        <h2>支払え！</h2>
-        <div>
-          {walletMonies.map(money => (
-            <MoneyImage key={money.id} money={money} onClick={pay(money)} />
-          ))}
-        </div>
-      </div>
+      <h2>財布: ¥{totalAmount}</h2>
+      <Button onClick={pay} className={css({ width: "80%" })}>
+        支払う！
+      </Button>
     </div>
   );
 };

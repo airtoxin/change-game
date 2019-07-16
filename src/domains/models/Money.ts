@@ -1,4 +1,4 @@
-import { sum } from "lodash/fp";
+import { sum, sortBy } from "lodash/fp";
 
 export type MoneyAmount =
   | 1
@@ -37,3 +37,5 @@ export const monies = moneyAmounts.map(Money);
 
 export const calculateAmount = (monies: Money[]): number =>
   sum(monies.map(m => m.amount));
+
+export const sortByAmount = sortBy<Money>(m => -m.amount);
