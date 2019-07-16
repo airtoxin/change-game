@@ -33,7 +33,8 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
           flexDirection: "column",
           position: "absolute",
           bottom: 0,
-          right: 0
+          right: 0,
+          zIndex: 10
         })}
       >
         {Array.from(Array(life)).map(() => (

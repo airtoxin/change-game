@@ -3,6 +3,7 @@ import { MoneyWithId } from "./MoneyWithId";
 import { calculateAmount, sortByAmount } from "../../domains/models/Money";
 import { partition } from "lodash/fp";
 import { ChangeCalculator } from "../../domains/ChangeCalculator";
+import { isPerfectPay } from "../../domains/isPerfectPay";
 
 const getRandomPrice = (maxPrice: number) =>
   Math.floor(Math.random() * maxPrice);
@@ -61,6 +62,7 @@ export const useGame = (onGameOver: () => void) => {
       let nextWalletMonies = sortByAmount(
         remains.concat(changes)
       ) as MoneyWithId[];
+      if (!isPerfectPay(nextWalletMonies)) missLife();
       // 残金が少ないなら10000円を補充
       if (calculateAmount(nextWalletMonies) < 500) {
         nextWalletMonies = [MoneyWithId(10000)].concat(nextWalletMonies);

@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { TitleScene } from "./TitleScene";
 import { GameScene } from "./GameScene";
+import { GameOverScene } from "./GameOverScene";
 
 export type Scene = "title" | "game" | "gameOver";
 
@@ -15,6 +16,6 @@ export const Game: React.FunctionComponent = () => {
     case "game":
       return <GameScene onGameOver={toGameOver} />;
     case "gameOver":
-      return <div>gameOver</div>;
+      return <GameOverScene onRetry={toGameScene} />;
   }
 };
