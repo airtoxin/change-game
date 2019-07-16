@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MoneyImage } from "../../components/MoneyImage";
 import { Button } from "../../components/PayButton";
 import { css } from "emotion";
@@ -18,7 +18,28 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
     selectAsCandidate,
     pay
   } = useGame(onGameOver);
+  const [showMissOverlay, setShowMissOverlay] = useState(false);
+  const prevLife = useRef<number>(life);
+  useEffect(() => {
+    if (life !== prevLife.current && life !== 0) {
+      setShowMissOverlay(true);
 
+      const timer = setTimeout(() => setShowMissOverlay(false), 1000);
+      return () => clearTimeout(timer);
+    }
+
+    prevLife.current = life;
+  }, [life]);
+
+  const absolutelyCenterCss = css({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    position: "absolute",
+    width: "100vw",
+    height: "100vh",
+    margin: "0 auto 0"
+  });
   return (
     <div
       className={css({
@@ -27,6 +48,34 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
         alignItems: "center"
       })}
     >
+      {showMissOverlay && (
+        <div
+          className={[
+            absolutelyCenterCss,
+            css({
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
+              zIndex: 10
+            })
+          ].join(" ")}
+        >
+          <h1
+            className={[
+              absolutelyCenterCss,
+              css({ color: "red", fontSize: "5rem", zIndex: 11 })
+            ].join(" ")}
+          >
+            ミス！
+          </h1>
+          <img
+            src="/img/miss.png"
+            alt="miss"
+            className={[
+              absolutelyCenterCss,
+              css({ maxWidth: "50vw", height: "auto" })
+            ].join(" ")}
+          />
+        </div>
+      )}
       <div
         className={css({
           display: "flex",
@@ -34,7 +83,7 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
           position: "absolute",
           bottom: 0,
           right: 0,
-          zIndex: 10
+          zIndex: 100
         })}
       >
         {Array.from(Array(life)).map(() => (
