@@ -32,7 +32,7 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
           display: "flex",
           flexDirection: "column",
           position: "absolute",
-          top: 0,
+          bottom: 0,
           right: 0
         })}
       >
@@ -57,8 +57,8 @@ export const GameScene: React.FunctionComponent<Props> = ({ onGameOver }) => {
         ))}
       </div>
       <h2>財布: ¥{totalAmount}</h2>
-      <Button onClick={pay} className={css({ width: "80%" })}>
-        支払う！
+      <Button onClick={pay} className={css({ width: "100%" })}>
+        <img src="/img/pay.png" alt="pay" className={css({ height: "5rem" })} />
       </Button>
     </div>
   );
