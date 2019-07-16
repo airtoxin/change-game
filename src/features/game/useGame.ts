@@ -56,7 +56,9 @@ export const useGame = (onGameOver: () => void) => {
     if (price > calculateAmount(payCandidates)) {
       missLife();
     } else {
-      const changes = new ChangeCalculator(price)
+      const changes = new ChangeCalculator(price, {
+        use2000: { probability: 0.2 }
+      })
         .calculateChange(payCandidates)
         .map(MoneyWithId);
       let nextWalletMonies = sortByAmount(
